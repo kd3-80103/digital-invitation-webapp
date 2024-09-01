@@ -1,0 +1,111 @@
++--------------------+
+|      Users         |
++--------------------+
+| user_id (PK)       |
+| username           |
+| password           |
+| email              |
+| role               |
++--------------------+
+
++--------------------+
+|  DesignCategories  |
++--------------------+
+| category_id (PK)   |
+| category_name      |
++--------------------+
+
++--------------------+
+|      Designs       |
++--------------------+
+| design_id (PK)     |
+| category_id (FK)   |
+| design_name        |
+| design_image_url   |
+| design_type        |
+| base_price         |
++--------------------+
+
++--------------------+
+|   DesignVersions   |
++--------------------+
+| version_id (PK)    |
+| design_id (FK)     |
+| version_number     |
+| changes            |
+| created_at         |
+| cost               |
+| is_current         |
++--------------------+
+
++--------------------+
+| DesignChangeTypes  |
++--------------------+
+| change_type_id (PK)|
+| change_description |
+| cost               |
++--------------------+
+
++--------------------+
+|   DesignChanges    |
++--------------------+
+| change_id (PK)     |
+| version_id (FK)    |
+| change_type_id (FK)|
+| change_details     |
+| change_date        |
++--------------------+
+
++--------------------+
+|      Orders        |
++--------------------+
+| order_id (PK)      |
+| user_id (FK)       |
+| design_id (FK)     |
+| version_id (FK)    |
+| order_type         |
+| order_date         |
+| status             |
+| customization_details|
+| total_cost         |
++--------------------+
+
+
+
+
+Table Relations
+
+    Users to Orders:
+        Relation: OneToMany
+        Description: One user can have many orders.
+        Implementation: Users.user_id (PK) to Orders.user_id (FK)
+
+    DesignCategories to Designs:
+        Relation: OneToMany
+        Description: One category can have many designs.
+        Implementation: DesignCategories.category_id (PK) to Designs.category_id (FK)
+
+    Designs to DesignVersions:
+        Relation: OneToMany
+        Description: One design can have many versions.
+        Implementation: Designs.design_id (PK) to DesignVersions.design_id (FK)
+
+    DesignVersions to DesignChanges:
+        Relation: OneToMany
+        Description: One version can have many changes.
+        Implementation: DesignVersions.version_id (PK) to DesignChanges.version_id (FK)
+
+    DesignChangeTypes to DesignChanges:
+        Relation: OneToMany
+        Description: One change type can be applied to many changes.
+        Implementation: DesignChangeTypes.change_type_id (PK) to DesignChanges.change_type_id (FK)
+
+    Designs to Orders:
+        Relation: ManyToOne
+        Description: Many orders can reference the same design.
+        Implementation: Orders.design_id (FK) to Designs.design_id (PK)
+
+    DesignVersions to Orders:
+        Relation: ManyToOne
+        Description: Many orders can reference the same design version.
+        Implementation: Orders.version_id (FK) to DesignVersions.version_id (PK)
